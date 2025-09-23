@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Daily Tools Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f0f4f8;color:#333;overflow-x:hidden;}
+#welcome{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:#1976d2;color:#fff;}
+#phone{display:none;margin:20px auto;width:350px;max-width:90vw;height:700px;border-radius:40px;background:url('https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=700&q=80') no-repeat center/cover;position:relative;box-shadow:0 15px 40px rgba(0,0,0,0.3);overflow:hidden;}
+#screen{position:absolute;top:50px;left:0;right:0;bottom:0;background:rgba(255,255,255,0.95);border-radius:40px 40px 0 0;overflow:auto;padding:10px;}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.app-icon{background:#1976d2;color:#fff;padding:15px;border-radius:20px;text-align:center;font-size:1rem;cursor:pointer;transition:0.3s;user-select:none;}
+.app-icon:hover{background:#115293;}
+.back-btn{margin:10px 0;padding:10px;border:none;border-radius:10px;background:#d32f2f;color:#fff;cursor:pointer;}
+.back-btn:hover{background:#a52828;}
+section{display:none;padding:10px;}
+section.active{display:block;}
+textarea,input,select,button{width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc;}
+button{background:#1976d2;color:#fff;border:none;cursor:pointer;}
+button:hover{background:#115293;}
+#calendar{width:100%;border-collapse:collapse;margin-top:10px;}
+#calendar th,#calendar td{padding:8px;border:1px solid #ccc;text-align:center;}
+#calendar th{background:#1976d2;color:#fff;}
+#calendar td.today{background:#ffeb3b;font-weight:bold;border-radius:50%;}
+</style>
+</head>
+<body>
+
+<div id="welcome">
+  <h1>Ultimate Daily Tools Hub</h1>
+  <p>Powered by WEB BUILDERS</p>
+</div>
+
+<div id="phone">
+  <div id="screen">
+    <div id="loginSection">
+      <h2>Login / Signup</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <button onclick="signup()">Signup</button>
+      <p id="loginMsg" style="color:red;"></p>
+    </div>
+
+    <div id="homeApps" style="display:none;">
+      <div class="app-grid">
+        <div class="app-icon" onclick="openApp('clockApp')">🕒 Clock</div>
+        <div class="app-icon" onclick="openApp('calendarApp')">📅 Calendar</div>
+        <div class="app-icon" onclick="openApp('unitApp')">⚖️ Unit Converter</div>
+        <div class="app-icon" onclick="openApp('notesApp')">📝 Notes</div>
+        <div class="app-icon" onclick="openApp('dateApp')">📆 Date Calc</div>
+        <div class="app-icon" onclick="openApp('currencyApp')">💰 Currency</div>
+        <div class="app-icon" onclick="openApp('funApp')">🎉 Fun/Facts</div>
+        <div class="app-icon" onclick="openApp('calcApp')">🧮 Calculator</div>
+        <div class="app-icon" onclick="openApp('reminderApp')">⏰ Reminders</div>
+        <div class="app-icon" onclick="openApp('stopwatchApp')">⏱ Stopwatch</div>
+      </div>
+      <button class="back-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Clock -->
+    <section id="clockApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Clock</h2>
+      <p>Current Time: <span id="clock"></span></p>
+    </section>
+
+    <!-- Calendar -->
+    <section id="calendarApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Calendar</h2>
+      <div class="flex-row">
+        <button onclick="changeMonth(-1)">Previous</button>
+        <button onclick="changeMonth(1)">Next</button>
+      </div>
+      <h3 id="monthName" style="text-align:center;"></h3>
+      <table id="calendar"></table>
+    </section>
+
+    <!-- Unit Converter -->
+    <section id="unitApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Unit Converter</h2>
+      <select id="unitType" onchange="populateUnits()">
+        <option value="length">Length</option>
+        <option value="weight">Weight</option>
+        <option value="temperature">Temperature</option>
+        <option value="speed">Speed</option>
+        <option value="volume">Volume</option>
+      </select>
+      <input type="number" id="unitInput" placeholder="Enter value">
+      <select id="unitFrom"></select>
+      <select id="unitTo"></select>
+      <button onclick="convertUnit()">Convert</button>
+      <p>Result: <span id="unitResult"></span></p>
+    </section>
+
+    <!-- Notes -->
+    <section id="notesApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Notes</h2>
+      <textarea id="notesText" placeholder="Write something..."></textarea>
+      <button onclick="saveNotes()">Save Notes</button>
+    </section>
+
+    <!-- Date Calculator -->
+    <section id="dateApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Date Difference</h2>
+      <input type="date" id="date1"> to <input type="date" id="date2">
+      <button onclick="dateDiff()">Calculate Difference</button>
+      <p id="dateDiffResult"></p>
+    </section>
+
+    <!-- Currency -->
+    <section id="currencyApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Currency Converter</h2>
+      <input type="number" id="currencyAmount" placeholder="Amount">
+      <select id="currencyFrom">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="INR">INR</option>
+      </select>
+      <select id="currencyTo">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="INR">INR</option>
+      </select>
+      <button onclick="convertCurrency()">Convert</button>
+      <p>Result: <span id="currencyResult"></span></p>
+    </section>
+
+    <!-- Fun/Facts -->
+    <section id="funApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Fun / Facts</h2>
+      <p id="funFactDisplay"></p>
+      <button onclick="showFact()">Show Fact</button>
+    </section>
+
+    <!-- Calculator -->
+    <section id="calcApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Calculator</h2>
+      <input type="text" id="calcInput" placeholder="Enter expression">
+      <button onclick="calculator()">Calculate</button>
+      <p>Result: <span id="calculatorResult"></span></p>
+    </section>
+
+    <!-- Reminders -->
+    <section id="reminderApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Reminders</h2>
+      <input type="text" id="reminderInput" placeholder="New reminder">
+      <button onclick="addReminder()">Add</button>
+      <ul id="reminderList"></ul>
+    </section>
+
+    <!-- Stopwatch -->
+    <section id="stopwatchApp">
+      <button class="back-btn" onclick="backHome()">Back</button>
+      <h2>Stopwatch</h2>
+      <p id="stopwatchDisplay">00:00:00</p>
+      <button onclick="startStopwatch()">Start</button>
+      <button onclick="stopStopwatch()">Stop</button>
+      <button onclick="resetStopwatch()">Reset</button>
+    </section>
+
+  </div>
+</div>
+
+<script>
+// Splash
+window.addEventListener('load', ()=>{
+  const splash=document.getElementById('welcome');
+  const phone=document.getElementById('phone');
+  setTimeout(()=>{
+    splash.style.transition='opacity 1s';
+    splash.style.opacity='0';
+    splash.addEventListener('transitionend', ()=>{
+      splash.style.display='none';
+      phone.style.display='block';
+    }, {once:true});
+  },2000);
+});
+
+// Users
+let users=JSON.parse(localStorage.getItem('users')||'{}'), currentUser=null;
+function signup(){const u=document.getElementById('username').value.trim();const p=document.getElementById('password').value.trim();
+if(!u||!p){document.getElementById('loginMsg').innerText='Fill both fields';return;}
+if(users[u]){document.getElementById('loginMsg').innerText='User exists';return;}
+users[u]={password:p,notes:''};localStorage.setItem('users',JSON.stringify(users));
+document.getElementById('loginMsg').innerText='Signup success, login now';}
+function login(){const u=document.getElementById('username').value.trim();const p=document.getElementById('password').value.trim();
+if(!users[u]||users[u].password!==p){document.getElementById('loginMsg').innerText='Invalid login';return;}
+currentUser=u;
+document.getElementById('loginSection').style.display='none';
+document.getElementById('homeApps').style.display='block';}
+function logout(){currentUser=null;document.getElementById('homeApps').style.display='none';document.getElementById('loginSection').style.display='block';}
+function openApp(id){document.getElementById('homeApps').style.display='none';document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function backHome(){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById('homeApps').style.display='block';}
+
+// Clock
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toLocaleTimeString();},1000);
+
+// Calendar
+let currentMonth=new Date().getMonth(), currentYear=new Date().getFullYear();
+const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function renderCalendar(){
+  const firstDay=new Date(currentYear,currentMonth,1).getDay();
+  const daysInMonth=new Date(currentYear,currentMonth+1,0).getDate();
+  let html='<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr><tr>';
+  for(let i=0;i<firstDay;i++) html+='<td></td>';
+  for(let d=1;d<=daysInMonth;d++){
+    html+=`<td${d===new Date().getDate()&&currentMonth===new Date().getMonth()&&currentYear===new Date().getFullYear()?' class="today"':''}>${d}</td>`;
+    if((d+firstDay)%7===0) html+='</tr><tr>';
+  }
+  html+='</tr>';
+  document.getElementById('calendar').innerHTML=html;
+  document.getElementById('monthName').textContent=monthNames[currentMonth]+' '+currentYear;
+}
+function changeMonth(delta){currentMonth+=delta;if(currentMonth>11){currentMonth=0;currentYear++;}if(currentMonth<0){currentMonth=11;currentYear--;}renderCalendar();}
+renderCalendar();
+
+// Unit Converter
+const units={length:{m:1,km:1000,ft:0.3048,inch:0.0254,mile:1609.34,cm:0.01},weight:{kg:1,g:0.001,lb:0.453592,oz:0.0283495,ton:1000},temperature:{C:'C',F:'F',K:'K'},speed:{mps:1,kph:3.6,mph:2.23694},volume:{l:1,ml:0.001,gal:3.78541,pint:0.473176}};
+const unitTypeEl=document.getElementById('unitType'), unitFrom=document.getElementById('unitFrom'), unitTo=document.getElementById('unitTo'), unitInput=document.getElementById('unitInput'), unitResult=document.getElementById('unitResult');
+function populateUnits(){
+  const type=unitTypeEl.value;
+  unitFrom.innerHTML=''; unitTo.innerHTML='';
+  for(let u in units[type]){unitFrom.innerHTML+=`<option value="${u}">${u}</option>`; unitTo.innerHTML+=`<option value="${u}">${u}</option>`;}
+}
+unitTypeEl.addEventListener('change',populateUnits);
+populateUnits();
+function convertUnit(){
+  const type=unitTypeEl.value,val=parseFloat(unitInput.value);
+  if(isNaN(val)){unitResult.textContent=''; return;}
+  if(type==='temperature'){
+    const from=unitFrom.value,to=unitTo.value;
+    let c;
+    if(from==='C') c=val;
+    else if(from==='F') c=(val-32)/1.8;
+    else c=val-273.15;
+    if(to==='C') unitResult.textContent=c.toFixed(2);
+    else if(to==='F') unitResult.textContent=(c*1.8+32).toFixed(2);
+    else unitResult.textContent=(c+273.15).toFixed(2);
+  }else{
+    const res=val*units[type][unitFrom.value]/units[type][unitTo.value];
+    unitResult.textContent=res.toFixed(4);
+  }
+}
+
+// Notes
+function saveNotes(){if(!currentUser)return; users[currentUser].notes=document.getElementById('notesText').value; localStorage.setItem('users',JSON.stringify(users)); alert('Saved');}
+if(currentUser)document.getElementById('notesText').value=users[currentUser]?.notes||'';
+
+// Date Calc
+function dateDiff(){const d1=new Date(document.getElementById('date1').value), d2=new Date(document.getElementById('date2').value); if(!d1||!d2){document.getElementById('dateDiffResult').textContent='Enter both dates'; return;} const diff=Math.abs(d2-d1)/1000/3600/24; document.getElementById('dateDiffResult').textContent=diff+' days';}
+
+// Currency
+function convertCurrency(){const amount=parseFloat(document.getElementById('currencyAmount').value); const from=document.getElementById('currencyFrom').value; const to=document.getElementById('currencyTo').value; if(isNaN(amount)){document.getElementById('currencyResult').textContent=''; return;} const rates={USD:1,EUR:0.93,INR:83}; document.getElementById('currencyResult').textContent=(amount*(rates[to]/rates[from])).toFixed(2)+' '+to;}
+
+// Fun/Facts
+const facts=["Honey never spoils.","Bananas are berries, but strawberries are not.","Octopuses have three hearts.","Sharks existed before trees.","Your nose can remember 50,000 scents."];
+function showFact(){document.getElementById('funFactDisplay').textContent=facts[Math.floor(Math.random()*facts.length)];}
+
+// Calculator
+function calculator(){try{document.getElementById('calculatorResult').textContent=eval(document.getElementById('calcInput').value);}catch(e){document.getElementById('calculatorResult').textContent='Error';}}
+
+// Reminders
+let reminders=JSON.parse(localStorage.getItem('reminders')||'[]');
+function addReminder(){const val=document.getElementById('reminderInput').value.trim(); if(!val)return; reminders.push(val); localStorage.setItem('reminders',JSON.stringify(reminders)); renderReminders(); document.getElementById('reminderInput').value='';}
+function renderReminders(){const list=document.getElementById('reminderList'); list.innerHTML=''; reminders.forEach((r,i)=>{const li=document.createElement('li'); li.textContent=r+' '; const del=document.createElement('button'); del.textContent='Delete'; del.onclick=()=>{reminders.splice(i,1); localStorage.setItem('reminders',JSON.stringify(reminders)); renderReminders();}; li.appendChild(del); list.appendChild(li);});}
+renderReminders();
+
+// Stopwatch
+let swInterval=0, swTime=0; // swTime in centiseconds (0.01s)
+function startStopwatch(){
+  if(swInterval) return;
+  swInterval=setInterval(()=>{
+    swTime++; // increase by 1 centisecond
+    updateStopwatch();
+  },10); // 10ms = 0.01s
+}
+function stopStopwatch(){clearInterval(swInterval); swInterval=0;}
+function resetStopwatch(){swTime=0; updateStopwatch();}
+function updateStopwatch(){
+  const cs = swTime % 100;
+  const totalSec = Math.floor(swTime/100);
+  const s = totalSec % 60;
+  const m = Math.floor(totalSec/60) % 60;
+  const h = Math.floor(totalSec/3600);
+  document.getElementById('stopwatchDisplay').textContent=
+    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${cs.toString().padStart(2,'0')}`;
+}
+
+</script>
+
+</body>
+</html>
