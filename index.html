@@ -6,10 +6,77 @@
 <title>Ultimate Daily Tools Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:'Roboto',sans-serif;margin:0;padding:0;background:#f0f4f8;color:#333;overflow-x:hidden;}
-#welcome{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:#1976d2;color:#fff;}
-#phone{display:none;margin:20px auto;width:350px;max-width:90vw;height:700px;border-radius:40px;background:url('https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=700&q=80') no-repeat center/cover;position:relative;box-shadow:0 15px 40px rgba(0,0,0,0.3);overflow:hidden;}
-#screen{position:absolute;top:50px;left:0;right:0;bottom:0;background:rgba(255,255,255,0.95);border-radius:40px 40px 0 0;overflow:auto;padding:10px;}
+body {
+  font-family:'Roboto',sans-serif;
+  margin:0;padding:0;
+  background:#f0f4f8;
+  color:#333;
+  overflow-x:hidden;
+}
+
+/* Welcome Page */
+#welcome {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease infinite;
+  color: white;
+  z-index: 9999;
+}
+#welcome h1 { font-size: 2.5rem; margin: 0; }
+#welcome p { margin: 8px 0; font-size: 1.1rem; }
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Phone */
+#phone {
+  display:none;
+  position: relative;
+  width: 350px;
+  height: 600px;
+  margin: 50px auto;
+  border: 8px solid #222;
+  border-radius: 40px;
+  background: #f0f0f0 url('https://i.ibb.co/9sKszX7/wallpaper.jpg') no-repeat center center/cover;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.phone-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 25px;
+  background: #222;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  z-index: 10;
+}
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 50px 20px 20px 20px;
+  box-sizing: border-box;
+}
+
+#screen {
+  position:absolute;
+  top:50px;left:0;right:0;bottom:0;
+  background:rgba(255,255,255,0.95);
+  border-radius:40px 40px 0 0;
+  overflow:auto;
+  padding:10px;
+}
 .app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 .app-icon{background:#1976d2;color:#fff;padding:15px;border-radius:20px;text-align:center;font-size:1rem;cursor:pointer;transition:0.3s;user-select:none;}
 .app-icon:hover{background:#115293;}
@@ -24,63 +91,159 @@ button:hover{background:#115293;}
 #calendar th,#calendar td{padding:8px;border:1px solid #ccc;text-align:center;}
 #calendar th{background:#1976d2;color:#fff;}
 #calendar td.today{background:#ffeb3b;font-weight:bold;border-radius:50%;}
+/* Analog clock */
+  #analogClock {
+    position: relative;
+    width: 220px; /* you can tweak size */
+    height: 220px;
+    margin: 18px auto;
+    border: 6px solid #1976d2;
+    border-radius: 50%;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  /* Numbers */
+  .number {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: 700;
+    color: #1976d2;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Hands: left edge of hand anchored at center; translateY centers vertically */
+  .hand {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0% 50%; /* pivot at left edge (which will be at center) */
+    transform: translateY(-50%) rotate(0deg);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+  .hand.hour { width: 60px; height: 6px; background: #1976d2; }
+  .hand.minute { width: 85px; height: 4px; background: #333; }
+  .hand.second { width: 95px; height: 2px; background: #e63946; }
+
+  /* small center dot */
+  .centerDot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    background: #1976d2;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+
 </style>
 </head>
 <body>
 
+<!-- Splash -->
 <div id="welcome">
-  <h1>Ultimate Daily Tools Hub</h1>
+  <h1>📱 Ultimate Daily Tools Hub 📱</h1>
+  <p>All your tools in one place</p>
   <p>Powered by WEB BUILDERS</p>
 </div>
 
+<!-- Phone -->
 <div id="phone">
-  <div id="screen">
-    <div id="loginSection">
-      <h2>Login / Signup</h2>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <button onclick="signup()">Signup</button>
-      <p id="loginMsg" style="color:red;"></p>
-    </div>
-
-    <div id="homeApps" style="display:none;">
-      <div class="app-grid">
-        <div class="app-icon" onclick="openApp('clockApp')">🕒 Clock</div>
-        <div class="app-icon" onclick="openApp('calendarApp')">📅 Calendar</div>
-        <div class="app-icon" onclick="openApp('unitApp')">⚖️ Unit Converter</div>
-        <div class="app-icon" onclick="openApp('notesApp')">📝 Notes</div>
-        <div class="app-icon" onclick="openApp('dateApp')">📆 Date Calc</div>
-        <div class="app-icon" onclick="openApp('currencyApp')">💰 Currency</div>
-        <div class="app-icon" onclick="openApp('funApp')">🎉 Fun/Facts</div>
-        <div class="app-icon" onclick="openApp('calcApp')">🧮 Calculator</div>
-        <div class="app-icon" onclick="openApp('reminderApp')">⏰ Reminders</div>
-        <div class="app-icon" onclick="openApp('stopwatchApp')">⏱ Stopwatch</div>
+  <div class="phone-notch"></div>
+  <div class="phone-screen">
+    <div id="screen">
+      <!-- Login -->
+      <div id="loginSection">
+        <h2>Login / Signup</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="signup()">Signup</button>
+        <p id="loginMsg" style="color:red;"></p>
       </div>
-      <button class="back-btn" onclick="logout()">Logout</button>
-    </div>
 
-    <!-- Clock -->
-    <section id="clockApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Clock</h2>
-      <p>Current Time: <span id="clock"></span></p>
-    </section>
+      <!-- Apps Grid -->
+      <div id="homeApps" style="display:none;">
+        <div class="app-grid">
+          <div class="app-icon" onclick="openApp('clockApp')">🕒 Clock</div>
+          <div class="app-icon" onclick="openApp('calendarApp')">📅 Calendar</div>
+          <div class="app-icon" onclick="openApp('unitApp')">⚖️ Unit Converter</div>
+          <div class="app-icon" onclick="openApp('notesApp')">📝 Notes</div>
+          <div class="app-icon" onclick="openApp('dateApp')">📆 Date Calculator</div>
+          <div class="app-icon" onclick="openApp('currencyApp')">💰 Currency</div>
+          <div class="app-icon" onclick="openApp('calcApp')">🧮 Calculator</div>
+          <div class="app-icon" onclick="openApp('stopwatchApp')">⏱ Stopwatch</div>
+          <div class="app-icon" onclick="openApp('timerApp')">⏲ Timer</div>
+          <div class="app-icon" onclick="openApp('alarmApp')">⏰ Alarm</div>
+	  <div class="app-icon" onclick="openApp('mapApp')">🗺 Map</div>
+	  <div class="app-icon" onclick="openApp('gamesApp')">🎮 Mini Games</div>
 
-    <!-- Calendar -->
-    <section id="calendarApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Calendar</h2>
-      <div class="flex-row">
-        <button onclick="changeMonth(-1)">Previous</button>
-        <button onclick="changeMonth(1)">Next</button>
+        </div>
+        <button class="back-btn" onclick="logout()">Logout</button>
       </div>
-      <h3 id="monthName" style="text-align:center;"></h3>
-      <table id="calendar"></table>
-    </section>
 
-    <!-- Unit Converter -->
-    <section id="unitApp">
+      <!-- Apps -->
+      <!-- CLOCK APP -->
+<section id="clockApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Clock</h2>
+  <p>Current Time: <span id="clock"></span></p>
+
+<div id="analogClock">
+  <!-- numbers 1..12 (we use data-num so JS can place them accurately) -->
+  <div class="number" data-num="1">1</div>
+  <div class="number" data-num="2">2</div>
+  <div class="number" data-num="3">3</div>
+  <div class="number" data-num="4">4</div>
+  <div class="number" data-num="5">5</div>
+  <div class="number" data-num="6">6</div>
+  <div class="number" data-num="7">7</div>
+  <div class="number" data-num="8">8</div>
+  <div class="number" data-num="9">9</div>
+  <div class="number" data-num="10">10</div>
+  <div class="number" data-num="11">11</div>
+  <div class="number" data-num="12">12</div>
+
+  <!-- hands -->
+  <div class="hand hour" id="hourHand"></div>
+  <div class="hand minute" id="minuteHand"></div>
+  <div class="hand second" id="secondHand"></div>
+
+  <!-- center dot -->
+  <div class="centerDot"></div>
+</div>
+
+
+  <!-- Timezones -->
+  <label for="timezoneSelect">Select Time Zone:</label>
+  <select id="timezoneSelect"></select>
+  <p>Timezone Time: <span id="tzClock"></span></p>
+</section>
+
+<!-- CALENDAR APP -->
+<section id="calendarApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Calendar</h2>
+  <div class="flex-row">
+    <button onclick="changeMonth(-1)">◀</button>
+    <span id="monthName"></span>
+    <button onclick="changeMonth(1)">▶</button>
+    <select id="yearSelect"></select>
+  </div>
+  <table id="calendar"></table>
+</section>
+
+
+       <section id="unitApp">
       <button class="back-btn" onclick="backHome()">Back</button>
       <h2>Unit Converter</h2>
       <select id="unitType" onchange="populateUnits()">
@@ -97,132 +260,229 @@ button:hover{background:#115293;}
       <p>Result: <span id="unitResult"></span></p>
     </section>
 
-    <!-- Notes -->
-    <section id="notesApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Notes</h2>
-      <textarea id="notesText" placeholder="Write something..."></textarea>
-      <button onclick="saveNotes()">Save Notes</button>
-    </section>
+      <section id="notesApp"><button class="back-btn" onclick="backHome()">Back</button><h2>Notes</h2><textarea id="notesText"></textarea><button onclick="saveNotes()">Save</button></section>
+      <section id="dateApp"><button class="back-btn" onclick="backHome()">Back</button><h2>Date Calculator</h2><input type="date" id="date1"> to <input type="date" id="date2"><button onclick="dateDiff()">Calc</button><p id="dateDiffResult"></p></section>
+      <section id="currencyApp"><button class="back-btn" onclick="backHome()">Back</button><h2>Currency</h2><input type="number" id="currencyAmount"><select id="currencyFrom"><option>USD</option><option>EUR</option><option>INR</option></select><select id="currencyTo"><option>USD</option><option>EUR</option><option>INR</option></select><button onclick="convertCurrency()">Convert</button><p><span id="currencyResult"></span></p></section>
+<section id="calcApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Calculator</h2>
+  <input type="text" id="calcInput" readonly placeholder="0">
+  <div id="calcButtons" style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:10px;">
+    <button onclick="appendCalc('7')">7</button>
+    <button onclick="appendCalc('8')">8</button>
+    <button onclick="appendCalc('9')">9</button>
+    <button onclick="appendCalc('/')">÷</button>
 
-    <!-- Date Calculator -->
-    <section id="dateApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Date Difference</h2>
-      <input type="date" id="date1"> to <input type="date" id="date2">
-      <button onclick="dateDiff()">Calculate Difference</button>
-      <p id="dateDiffResult"></p>
-    </section>
+    <button onclick="appendCalc('4')">4</button>
+    <button onclick="appendCalc('5')">5</button>
+    <button onclick="appendCalc('6')">6</button>
+    <button onclick="appendCalc('*')">×</button>
 
-    <!-- Currency -->
-    <section id="currencyApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Currency Converter</h2>
-      <input type="number" id="currencyAmount" placeholder="Amount">
-      <select id="currencyFrom">
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="INR">INR</option>
-      </select>
-      <select id="currencyTo">
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="INR">INR</option>
-      </select>
-      <button onclick="convertCurrency()">Convert</button>
-      <p>Result: <span id="currencyResult"></span></p>
-    </section>
+    <button onclick="appendCalc('1')">1</button>
+    <button onclick="appendCalc('2')">2</button>
+    <button onclick="appendCalc('3')">3</button>
+    <button onclick="appendCalc('-')">−</button>
 
-    <!-- Fun/Facts -->
-    <section id="funApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Fun / Facts</h2>
-      <p id="funFactDisplay"></p>
-      <button onclick="showFact()">Show Fact</button>
-    </section>
+    <button onclick="appendCalc('0')">0</button>
+    <button onclick="appendCalc('.')">.</button>
+    <button onclick="calculateResult()">=</button>
+    <button onclick="appendCalc('+')">+</button>
 
-    <!-- Calculator -->
-    <section id="calcApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Calculator</h2>
-      <input type="text" id="calcInput" placeholder="Enter expression">
-      <button onclick="calculator()">Calculate</button>
-      <p>Result: <span id="calculatorResult"></span></p>
-    </section>
+    <button onclick="clearCalc()" style="grid-column:span 4;background:#d32f2f;">C</button>
+  </div>
+  <p>Result: <span id="calculatorResult"></span></p>
+</section>
 
-    <!-- Reminders -->
-    <section id="reminderApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Reminders</h2>
-      <input type="text" id="reminderInput" placeholder="New reminder">
-      <button onclick="addReminder()">Add</button>
-      <ul id="reminderList"></ul>
-    </section>
+      <section id="stopwatchApp"><button class="back-btn" onclick="backHome()">Back</button><h2>Stopwatch</h2><p id="stopwatchDisplay">00:00:00:00</p><button onclick="startStopwatch()">Start</button><button onclick="stopStopwatch()">Stop</button><button onclick="resetStopwatch()">Reset</button></section>
 
-    <!-- Stopwatch -->
-    <section id="stopwatchApp">
-      <button class="back-btn" onclick="backHome()">Back</button>
-      <h2>Stopwatch</h2>
-      <p id="stopwatchDisplay">00:00:00</p>
-      <button onclick="startStopwatch()">Start</button>
-      <button onclick="stopStopwatch()">Stop</button>
-      <button onclick="resetStopwatch()">Reset</button>
-    </section>
+<!-- TIMER APP -->
+<section id="timerApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Timer</h2>
+  <input type="number" id="timerInput" placeholder="Enter seconds">
+  <button onclick="startTimer()">Start</button>
+  <button onclick="stopTimer()">Stop</button>
+  <p>Time Left: <span id="timerDisplay">0</span> sec</p>
+</section>
 
+<!-- ALARM APP -->
+<section id="alarmApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Alarm</h2>
+  <input type="time" id="alarmTime">
+  <button onclick="addAlarm()">Set Alarm</button>
+  <ul id="alarmList"></ul>
+</section>
+
+<!-- MAP APP -->
+<section id="mapApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Map</h2>
+  <input type="text" id="mapSearch" placeholder="Enter location">
+  <button onclick="searchMap()">Search</button>
+  <div id="mapContainer" style="margin-top:10px;">
+    <iframe id="mapFrame" src="https://www.google.com/maps/embed?pb=!1m18" width="100%" height="300"></iframe>
+  </div>
+</section>
+
+<!-- MINI GAME APP (Tic Tac Toe) -->
+<section id="gamesApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>Mini Games: Tic Tac Toe</h2>
+  <div id="ticTacToe" style="display:grid;grid-template-columns:repeat(3,60px);gap:5px;margin:10px auto;"></div>
+  <button onclick="resetTTT()">Reset Game</button>
+  <p id="tttResult"></p>
+</section>
+
+    </div>
   </div>
 </div>
 
 <script>
 // Splash
 window.addEventListener('load', ()=>{
-  const splash=document.getElementById('welcome');
-  const phone=document.getElementById('phone');
   setTimeout(()=>{
+    const splash=document.getElementById('welcome');
     splash.style.transition='opacity 1s';
     splash.style.opacity='0';
-    splash.addEventListener('transitionend', ()=>{
-      splash.style.display='none';
-      phone.style.display='block';
-    }, {once:true});
+    splash.addEventListener('transitionend', ()=>{splash.style.display='none';document.getElementById('phone').style.display='block';},{once:true});
   },2000);
 });
 
 // Users
-let users=JSON.parse(localStorage.getItem('users')||'{}'), currentUser=null;
-function signup(){const u=document.getElementById('username').value.trim();const p=document.getElementById('password').value.trim();
-if(!u||!p){document.getElementById('loginMsg').innerText='Fill both fields';return;}
-if(users[u]){document.getElementById('loginMsg').innerText='User exists';return;}
-users[u]={password:p,notes:''};localStorage.setItem('users',JSON.stringify(users));
-document.getElementById('loginMsg').innerText='Signup success, login now';}
-function login(){const u=document.getElementById('username').value.trim();const p=document.getElementById('password').value.trim();
-if(!users[u]||users[u].password!==p){document.getElementById('loginMsg').innerText='Invalid login';return;}
-currentUser=u;
-document.getElementById('loginSection').style.display='none';
-document.getElementById('homeApps').style.display='block';}
-function logout(){currentUser=null;document.getElementById('homeApps').style.display='none';document.getElementById('loginSection').style.display='block';}
-function openApp(id){document.getElementById('homeApps').style.display='none';document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function backHome(){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById('homeApps').style.display='block';}
+let users=JSON.parse(localStorage.getItem('users')||'{}'),currentUser=null;
+function signup(){let u=username.value.trim(),p=password.value.trim();if(!u||!p){loginMsg.innerText='Fill both fields';return;}if(users[u]){loginMsg.innerText='User exists';return;}users[u]={password:p,notes:''};localStorage.setItem('users',JSON.stringify(users));loginMsg.innerText='Signup success';}
+function login() {
+  let u = username.value.trim(),
+      p = password.value.trim();
+  if (!users[u] || users[u].password !== p) {
+    loginMsg.innerText = 'Invalid login';
+    return;
+  }
+  currentUser = u;
+  loginSection.style.display = 'none';
+  homeApps.style.display = 'block';
 
-// Clock
-setInterval(()=>{document.getElementById('clock').textContent=new Date().toLocaleTimeString();},1000);
+  // Load user's notes after login
+  notesText.value = users[currentUser].notes || '';
+}
 
-// Calendar
-let currentMonth=new Date().getMonth(), currentYear=new Date().getFullYear();
+function logout(){currentUser=null;homeApps.style.display='none';loginSection.style.display='block';}
+function openApp(id){homeApps.style.display='none';document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function backHome(){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));homeApps.style.display='block';}
+
+// CLOCK APP
+function updateDigitalClock(){
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+}
+setInterval(updateDigitalClock,1000);
+updateDigitalClock();
+
+// Analog Clock
+ (function(){
+  const analog = document.getElementById('analogClock');
+  const numbers = analog.querySelectorAll('.number');
+  const hourHand = document.getElementById('hourHand');
+  const minuteHand = document.getElementById('minuteHand');
+  const secondHand = document.getElementById('secondHand');
+
+  // Proper placement of numbers
+  function positionNumbers() {
+    const size = analog.offsetWidth; // use element’s width
+    const cx = size / 2;
+    const cy = size / 2;
+    const radius = (size / 2) - 25; // distance from edge
+
+    numbers.forEach(node => {
+      const n = parseInt(node.dataset.num, 10);
+      const angleDeg = (n * 30) - 90;
+      const angleRad = angleDeg * Math.PI / 180;
+      const x = cx + Math.cos(angleRad) * radius;
+      const y = cy + Math.sin(angleRad) * radius;
+      node.style.left = x + 'px';
+      node.style.top = y + 'px';
+    });
+  }
+
+  // Update clock hands
+  function updateHands(){
+    const now = new Date();
+    const sec = now.getSeconds() + now.getMilliseconds()/1000;
+    const min = now.getMinutes() + sec/60;
+    const hr = (now.getHours() % 12) + min/60;
+
+    secondHand.style.transform = `translateY(-50%) rotate(${sec*6}deg)`;
+    minuteHand.style.transform = `translateY(-50%) rotate(${min*6}deg)`;
+    hourHand.style.transform = `translateY(-50%) rotate(${hr*30}deg)`;
+  }
+
+  // Init
+  window.addEventListener('resize', positionNumbers);
+  setTimeout(positionNumbers, 50); // wait for render
+  setInterval(updateHands, 1000);
+  updateHands();
+})();
+
+// Timezone Clock
+const tzSelect = document.getElementById('timezoneSelect');
+const tzClock = document.getElementById('tzClock');
+Intl.supportedValuesOf('timeZone').forEach(tz=>{
+  const opt = document.createElement('option');
+  opt.value = tz; opt.textContent = tz;
+  tzSelect.appendChild(opt);
+});
+tzSelect.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+function updateTzClock(){
+  const tz = tzSelect.value;
+  tzClock.textContent = new Date().toLocaleTimeString('en-US',{timeZone:tz});
+}
+setInterval(updateTzClock,1000);
+tzSelect.addEventListener('change',updateTzClock);
+updateTzClock();
+
+// CALENDAR APP
 const monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+let currentMonth=new Date().getMonth();
+let currentYear=new Date().getFullYear();
+
+function populateYearSelect(){
+  const yearSelect=document.getElementById('yearSelect');
+  yearSelect.innerHTML='';
+  for(let y=1950;y<=2100;y++){
+    const opt=document.createElement('option');
+    opt.value=y; opt.textContent=y;
+    yearSelect.appendChild(opt);
+  }
+  yearSelect.value=currentYear;
+  yearSelect.addEventListener('change',()=>{
+    currentYear=parseInt(yearSelect.value);
+    renderCalendar();
+  });
+}
+populateYearSelect();
+
+function changeMonth(delta){
+  currentMonth+=delta;
+  if(currentMonth>11){currentMonth=0; currentYear++; document.getElementById('yearSelect').value=currentYear;}
+  if(currentMonth<0){currentMonth=11; currentYear--; document.getElementById('yearSelect').value=currentYear;}
+  renderCalendar();
+}
+
 function renderCalendar(){
+  document.getElementById('monthName').textContent = monthNames[currentMonth]+" "+currentYear;
   const firstDay=new Date(currentYear,currentMonth,1).getDay();
   const daysInMonth=new Date(currentYear,currentMonth+1,0).getDate();
   let html='<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr><tr>';
   for(let i=0;i<firstDay;i++) html+='<td></td>';
   for(let d=1;d<=daysInMonth;d++){
-    html+=`<td${d===new Date().getDate()&&currentMonth===new Date().getMonth()&&currentYear===new Date().getFullYear()?' class="today"':''}>${d}</td>`;
+    const isToday = d===new Date().getDate() && currentMonth===new Date().getMonth() && currentYear===new Date().getFullYear();
+    html+=`<td${isToday?' class="today"':''}>${d}</td>`;
     if((d+firstDay)%7===0) html+='</tr><tr>';
   }
   html+='</tr>';
   document.getElementById('calendar').innerHTML=html;
-  document.getElementById('monthName').textContent=monthNames[currentMonth]+' '+currentYear;
 }
-function changeMonth(delta){currentMonth+=delta;if(currentMonth>11){currentMonth=0;currentYear++;}if(currentMonth<0){currentMonth=11;currentYear--;}renderCalendar();}
 renderCalendar();
 
 // Unit Converter
@@ -254,50 +514,173 @@ function convertUnit(){
 }
 
 // Notes
-function saveNotes(){if(!currentUser)return; users[currentUser].notes=document.getElementById('notesText').value; localStorage.setItem('users',JSON.stringify(users)); alert('Saved');}
-if(currentUser)document.getElementById('notesText').value=users[currentUser]?.notes||'';
+function saveNotes() {
+  if (!currentUser) return;
+  users[currentUser].notes = notesText.value;
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Saved');
+}
 
-// Date Calc
-function dateDiff(){const d1=new Date(document.getElementById('date1').value), d2=new Date(document.getElementById('date2').value); if(!d1||!d2){document.getElementById('dateDiffResult').textContent='Enter both dates'; return;} const diff=Math.abs(d2-d1)/1000/3600/24; document.getElementById('dateDiffResult').textContent=diff+' days';}
+
+// Date
+function dateDiff() {
+  let d1 = new Date(date1.value);
+  let d2 = new Date(date2.value);
+  if (!d1 || !d2) {
+    dateDiffResult.textContent = 'Enter both dates';
+    return;
+  }
+
+  if (d2 < d1) [d1, d2] = [d2, d1]; // ensure d2 >= d1
+
+  let years = d2.getFullYear() - d1.getFullYear();
+  let months = d2.getMonth() - d1.getMonth();
+  let days = d2.getDate() - d1.getDate();
+
+  if (days < 0) {
+    months--;
+    let prevMonth = new Date(d2.getFullYear(), d2.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  dateDiffResult.textContent = `${years} years, ${months} months, ${days} days`;
+}
+
 
 // Currency
-function convertCurrency(){const amount=parseFloat(document.getElementById('currencyAmount').value); const from=document.getElementById('currencyFrom').value; const to=document.getElementById('currencyTo').value; if(isNaN(amount)){document.getElementById('currencyResult').textContent=''; return;} const rates={USD:1,EUR:0.93,INR:83}; document.getElementById('currencyResult').textContent=(amount*(rates[to]/rates[from])).toFixed(2)+' '+to;}
-
-// Fun/Facts
-const facts=["Honey never spoils.","Bananas are berries, but strawberries are not.","Octopuses have three hearts.","Sharks existed before trees.","Your nose can remember 50,000 scents."];
-function showFact(){document.getElementById('funFactDisplay').textContent=facts[Math.floor(Math.random()*facts.length)];}
+function convertCurrency(){let amt=parseFloat(currencyAmount.value);if(isNaN(amt))return;let rates={USD:1,EUR:0.93,INR:83};currencyResult.textContent=(amt*(rates[currencyTo.value]/rates[currencyFrom.value])).toFixed(2)+' '+currencyTo.value;}
 
 // Calculator
-function calculator(){try{document.getElementById('calculatorResult').textContent=eval(document.getElementById('calcInput').value);}catch(e){document.getElementById('calculatorResult').textContent='Error';}}
-
-// Reminders
-let reminders=JSON.parse(localStorage.getItem('reminders')||'[]');
-function addReminder(){const val=document.getElementById('reminderInput').value.trim(); if(!val)return; reminders.push(val); localStorage.setItem('reminders',JSON.stringify(reminders)); renderReminders(); document.getElementById('reminderInput').value='';}
-function renderReminders(){const list=document.getElementById('reminderList'); list.innerHTML=''; reminders.forEach((r,i)=>{const li=document.createElement('li'); li.textContent=r+' '; const del=document.createElement('button'); del.textContent='Delete'; del.onclick=()=>{reminders.splice(i,1); localStorage.setItem('reminders',JSON.stringify(reminders)); renderReminders();}; li.appendChild(del); list.appendChild(li);});}
-renderReminders();
-
-// Stopwatch
-let swInterval=0, swTime=0; // swTime in centiseconds (0.01s)
-function startStopwatch(){
-  if(swInterval) return;
-  swInterval=setInterval(()=>{
-    swTime++; // increase by 1 centisecond
-    updateStopwatch();
-  },10); // 10ms = 0.01s
+function appendCalc(val) {
+  calcInput.value += val;
 }
-function stopStopwatch(){clearInterval(swInterval); swInterval=0;}
-function resetStopwatch(){swTime=0; updateStopwatch();}
-function updateStopwatch(){
-  const cs = swTime % 100;
-  const totalSec = Math.floor(swTime/100);
-  const s = totalSec % 60;
-  const m = Math.floor(totalSec/60) % 60;
-  const h = Math.floor(totalSec/3600);
-  document.getElementById('stopwatchDisplay').textContent=
-    `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${cs.toString().padStart(2,'0')}`;
+
+function clearCalc() {
+  calcInput.value = '';
+  calculatorResult.textContent = '';
 }
+
+function calculateResult() {
+  try {
+    calculatorResult.textContent = eval(calcInput.value);
+  } catch {
+    calculatorResult.textContent = 'Error';
+  }
+}
+
+
+
+// Stopwatch (with ms)
+let swInterval=0,swTime=0;
+function startStopwatch(){if(swInterval)return;swInterval=setInterval(()=>{swTime++;updateStopwatch();},10);}
+function stopStopwatch(){clearInterval(swInterval);swInterval=0;}
+function resetStopwatch(){swTime=0;updateStopwatch();}
+function updateStopwatch(){let cs=swTime%100,s=Math.floor(swTime/100)%60,m=Math.floor(swTime/6000)%60,h=Math.floor(swTime/360000);stopwatchDisplay.textContent=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}:${cs.toString().padStart(2,'0')}`;}
+
+// -------------------- TIMER APP --------------------
+let timerInterval, timerTime;
+function startTimer() {
+  let sec = parseInt(document.getElementById('timerInput').value) || 0;
+  clearInterval(timerInterval);
+  timerTime = sec;
+  timerInterval = setInterval(() => {
+    if (timerTime <= 0) {
+      clearInterval(timerInterval);
+      alert("⏰ Time's up!");
+      return;
+    }
+    timerTime--;
+    document.getElementById('timerDisplay').textContent = timerTime;
+  }, 1000);
+}
+function stopTimer() { clearInterval(timerInterval); }
+
+// -------------------- ALARM APP --------------------
+let alarms = JSON.parse(localStorage.getItem('alarms')||'[]');
+const alarmList = document.getElementById('alarmList');
+
+function renderAlarms() {
+  alarmList.innerHTML = '';
+  alarms.forEach((time, i) => {
+    let li = document.createElement('li');
+    li.textContent = time + ' ';
+    let del = document.createElement('button');
+    del.textContent = 'X';
+    del.onclick = () => { alarms.splice(i,1); localStorage.setItem('alarms',JSON.stringify(alarms)); renderAlarms(); };
+    li.appendChild(del);
+    alarmList.appendChild(li);
+  });
+}
+renderAlarms();
+
+function addAlarm() {
+  const t = document.getElementById('alarmTime').value;
+  if(!t) return;
+  alarms.push(t);
+  localStorage.setItem('alarms', JSON.stringify(alarms));
+  renderAlarms();
+}
+
+// Check alarms every second
+setInterval(()=>{
+  const now = new Date();
+  const hhmm = now.toTimeString().slice(0,5);
+  if(alarms.includes(hhmm)) alert('⏰ Alarm!');
+},1000);
+
+// -------------------- MAP APP --------------------
+function searchMap() {
+  const query = document.getElementById('mapSearch').value;
+  if(!query) return;
+  document.getElementById('mapFrame').src = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+}
+
+// -------------------- MINI GAME APP (Tic Tac Toe) --------------------
+let board = Array(9).fill('');
+const tttDiv = document.getElementById('ticTacToe');
+const tttResult = document.getElementById('tttResult');
+
+function renderTTT() {
+  tttDiv.innerHTML='';
+  board.forEach((v,i)=>{
+    let btn=document.createElement('button');
+    btn.style.width='60px'; btn.style.height='60px'; btn.style.fontSize='24px';
+    btn.textContent=v;
+    btn.onclick=()=>makeMove(i);
+    tttDiv.appendChild(btn);
+  });
+}
+
+function makeMove(i) {
+  if(board[i] || tttResult.textContent) return;
+  board[i]='X';
+  if(checkWinner('X')) { tttResult.textContent='You Win!'; renderTTT(); return; }
+  aiMove();
+  renderTTT();
+}
+
+function aiMove() {
+  let empty = board.map((v,i)=>v===''?i:null).filter(v=>v!==null);
+  if(empty.length===0) return;
+  let choice = empty[Math.floor(Math.random()*empty.length)];
+  board[choice]='O';
+  if(checkWinner('O')) tttResult.textContent='AI Wins!';
+}
+
+function checkWinner(p) {
+  const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  return wins.some(w=> w.every(i=>board[i]===p));
+}
+
+function resetTTT() { board=Array(9).fill(''); tttResult.textContent=''; renderTTT(); }
+
+renderTTT();
+
 
 </script>
-
 </body>
 </html>
