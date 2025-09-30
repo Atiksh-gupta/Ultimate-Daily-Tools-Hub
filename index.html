@@ -139,9 +139,10 @@ button:hover{background:#115293;}
           <div class="app-icon" onclick="openApp('alarmApp')">⏰ Alarm</div>
 	  <div class="app-icon" onclick="openApp('mapApp')">🗺 Map</div>
           <div class="app-icon" onclick="openApp('wallpaperApp')">🖼 Wallpaper</div>
-          <div class="app-icon" onclick="openApp('strikerzoneApp')">⚽ StrikerZone</div>
-          <div class="app-icon" onclick="openApp('rubixhubApp')">🧩 RubixHub</div>
-          <div class="app-icon" onclick="openApp('investoplayApp')">💹 InvestoPlay</div>
+<div class="app-icon" onclick="openExternalApp('https://atiksh-gupta.github.io/Strikerzone/')">⚽ StrikerZone</div>
+<div class="app-icon" onclick="openExternalApp('https://atiksh-gupta.github.io/RubixHub/')">🧩 RubixHub</div>
+<div class="app-icon" onclick="openExternalApp('https://atiksh-gupta.github.io/InvestoPlay/')">💹 InvestoPlay</div>
+
 
         </div>
         <button class="back-btn" onclick="logout()">Logout</button>
@@ -283,26 +284,6 @@ button:hover{background:#115293;}
         </div>
       </section>
 
-<!-- StrikerZone App -->
-<section id="strikerzoneApp">
-  <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>⚽ StrikerZone</h2>
-  <iframe src="https://atiksh-gupta.github.io/Strikerzone/" width="110%" height="400" style="border:none;"></iframe>
-</section>
-
-<!-- RubixHub App -->
-<section id="rubixhubApp">
-  <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>🧩 RubixHub</h2>
-  <iframe src="https://atiksh-gupta.github.io/RubixHub/" width="110%" height="400" style="border:none;"></iframe>
-</section>
-
-<!-- InvestoPlay App -->
-<section id="investoplayApp">
-  <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>💹 InvestoPlay</h2>
-  <iframe src="https://atiksh-gupta.github.io/InvestoPlay/" width="110%" height="400" style="border:none;"></iframe>
-</section>
 
 
 <script>
@@ -728,6 +709,16 @@ function closeWallpaperApp(){
   document.getElementById('wallpaperApp').style.display='none';
 }
 function applyWallpaper(src){document.body.style.backgroundImage=`url('${src}')`;document.body.style.backgroundSize='cover';document.body.style.backgroundPosition='center';}
+
+function openExternalApp(url) {
+  // simulate closing the home screen
+  homeApps.style.display = 'none';
+  // open the external website in a new tab
+  window.open(url, '_blank');
+  // optionally return to home after a short delay
+  setTimeout(()=>{homeApps.style.display = 'block';}, 500);
+}
+
 
 </script>
 </body>
