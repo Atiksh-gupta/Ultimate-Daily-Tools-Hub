@@ -40,7 +40,7 @@ body {
 #phone {
   display:none;
   position: relative;
-  width: 350px;
+  width: 360px;
   height: 600px;
   margin: 50px auto;
   border: 8px solid #222;
@@ -91,58 +91,9 @@ button:hover{background:#115293;}
 #calendar th,#calendar td{padding:8px;border:1px solid #ccc;text-align:center;}
 #calendar th{background:#1976d2;color:#fff;}
 #calendar td.today{background:#ffeb3b;font-weight:bold;border-radius:50%;}
-/* Analog clock */
-  #analogClock {
-    position: relative;
-    width: 220px; /* you can tweak size */
-    height: 220px;
-    margin: 18px auto;
-    border: 6px solid #1976d2;
-    border-radius: 50%;
-    background: #fff;
-    box-sizing: border-box;
-  }
+#wallpaperApp img{width:100px;cursor:pointer;border:2px solid #ccc;transition:0.3s;}
+#wallpaperApp img:hover{border-color:#1976d2;}
 
-  /* Numbers */
-  .number {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    font-weight: 700;
-    color: #1976d2;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  /* Hands: left edge of hand anchored at center; translateY centers vertically */
-  .hand {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0% 50%; /* pivot at left edge (which will be at center) */
-    transform: translateY(-50%) rotate(0deg);
-    border-radius: 3px;
-    pointer-events: none;
-  }
-  .hand.hour { width: 60px; height: 6px; background: #1976d2; }
-  .hand.minute { width: 85px; height: 4px; background: #333; }
-  .hand.second { width: 95px; height: 2px; background: #e63946; }
-
-  /* small center dot */
-  .centerDot {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 10px;
-    height: 10px;
-    background: #1976d2;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    pointer-events: none;
-  }
 
 
 </style>
@@ -163,12 +114,14 @@ button:hover{background:#115293;}
     <div id="screen">
       <!-- Login -->
       <div id="loginSection">
-        <h2>Login / Signup</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <button onclick="signup()">Signup</button>
-        <p id="loginMsg" style="color:red;"></p>
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Signup</button>
+  <hr>
+  <button onclick="guestLogin()" class="guest-btn">Continue as Guest</button>
+<p id="guestBadge" style="display:none; color: red;">Guest Mode</p>
       </div>
 
       <!-- Apps Grid -->
@@ -185,7 +138,10 @@ button:hover{background:#115293;}
           <div class="app-icon" onclick="openApp('timerApp')">⏲ Timer</div>
           <div class="app-icon" onclick="openApp('alarmApp')">⏰ Alarm</div>
 	  <div class="app-icon" onclick="openApp('mapApp')">🗺 Map</div>
-	  <div class="app-icon" onclick="openApp('gamesApp')">🎮 Mini Games</div>
+          <div class="app-icon" onclick="openApp('wallpaperApp')">🖼 Wallpaper</div>
+          <div class="app-icon" onclick="openApp('strikerzoneApp')">⚽ StrikerZone</div>
+          <div class="app-icon" onclick="openApp('rubixhubApp')">🧩 RubixHub</div>
+          <div class="app-icon" onclick="openApp('investoplayApp')">💹 InvestoPlay</div>
 
         </div>
         <button class="back-btn" onclick="logout()">Logout</button>
@@ -199,19 +155,7 @@ button:hover{background:#115293;}
   <p>Current Time: <span id="clock"></span></p>
 
 <div id="analogClock">
-  <!-- numbers 1..12 (we use data-num so JS can place them accurately) -->
-  <div class="number" data-num="1">1</div>
-  <div class="number" data-num="2">2</div>
-  <div class="number" data-num="3">3</div>
-  <div class="number" data-num="4">4</div>
-  <div class="number" data-num="5">5</div>
-  <div class="number" data-num="6">6</div>
-  <div class="number" data-num="7">7</div>
-  <div class="number" data-num="8">8</div>
-  <div class="number" data-num="9">9</div>
-  <div class="number" data-num="10">10</div>
-  <div class="number" data-num="11">11</div>
-  <div class="number" data-num="12">12</div>
+
 
   <!-- hands -->
   <div class="hand hour" id="hourHand"></div>
@@ -298,21 +242,23 @@ button:hover{background:#115293;}
 <!-- TIMER APP -->
 <section id="timerApp">
   <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>Timer</h2>
+  <h2>⏲ Timer</h2>
   <input type="number" id="timerInput" placeholder="Enter seconds">
   <button onclick="startTimer()">Start</button>
   <button onclick="stopTimer()">Stop</button>
-  <p>Time Left: <span id="timerDisplay">0</span> sec</p>
+  <p id="timerDisplay">0 sec</p>
 </section>
 
 <!-- ALARM APP -->
 <section id="alarmApp">
   <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>Alarm</h2>
+  <h2>⏰ Alarm</h2>
   <input type="time" id="alarmTime">
   <button onclick="addAlarm()">Set Alarm</button>
   <ul id="alarmList"></ul>
+  <button id="stopAlarmBtn" onclick="stopAlarmSound()" style="display:none;">Stop Alarm</button>
 </section>
+
 
 <!-- MAP APP -->
 <section id="mapApp">
@@ -325,18 +271,39 @@ button:hover{background:#115293;}
   </div>
 </section>
 
-<!-- MINI GAME APP (Tic Tac Toe) -->
-<section id="gamesApp">
+ <section id="wallpaperApp">
+        <button class="back-btn" onclick="backHome()">Back</button>
+        <h2>Wallpaper App</h2>
+        <p>Select a wallpaper to apply:</p>
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">
+          <img src="https://picsum.photos/id/1015/200/300" onclick="applyWallpaper(this.src)">
+          <img src="https://picsum.photos/id/1016/200/300" onclick="applyWallpaper(this.src)">
+          <img src="https://picsum.photos/id/1018/200/300" onclick="applyWallpaper(this.src)">
+          <img src="https://picsum.photos/id/1020/200/300" onclick="applyWallpaper(this.src)">
+        </div>
+      </section>
+
+<!-- StrikerZone App -->
+<section id="strikerzoneApp">
   <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>Mini Games: Tic Tac Toe</h2>
-  <div id="ticTacToe" style="display:grid;grid-template-columns:repeat(3,60px);gap:5px;margin:10px auto;"></div>
-  <button onclick="resetTTT()">Reset Game</button>
-  <p id="tttResult"></p>
+  <h2>⚽ StrikerZone</h2>
+  <iframe src="https://atiksh-gupta.github.io/Strikerzone/" width="110%" height="400" style="border:none;"></iframe>
 </section>
 
-    </div>
-  </div>
-</div>
+<!-- RubixHub App -->
+<section id="rubixhubApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>🧩 RubixHub</h2>
+  <iframe src="https://atiksh-gupta.github.io/RubixHub/" width="110%" height="400" style="border:none;"></iframe>
+</section>
+
+<!-- InvestoPlay App -->
+<section id="investoplayApp">
+  <button class="back-btn" onclick="backHome()">Back</button>
+  <h2>💹 InvestoPlay</h2>
+  <iframe src="https://atiksh-gupta.github.io/InvestoPlay/" width="110%" height="400" style="border:none;"></iframe>
+</section>
+
 
 <script>
 // Splash
@@ -350,24 +317,108 @@ window.addEventListener('load', ()=>{
 });
 
 // Users
-let users=JSON.parse(localStorage.getItem('users')||'{}'),currentUser=null;
-function signup(){let u=username.value.trim(),p=password.value.trim();if(!u||!p){loginMsg.innerText='Fill both fields';return;}if(users[u]){loginMsg.innerText='User exists';return;}users[u]={password:p,notes:''};localStorage.setItem('users',JSON.stringify(users));loginMsg.innerText='Signup success';}
+let users = JSON.parse(localStorage.getItem('users') || '{}');
+let currentUser = null;
+let isGuest = false;
+
+// --- SIGNUP ---
+function signup() {
+  let u = username.value.trim(), p = password.value.trim();
+  if (!u || !p) return alert("Fill both fields");
+  if (users[u]) return alert("User exists");
+
+  users[u] = { password: p, notes: "" };
+  localStorage.setItem('users', JSON.stringify(users));
+  alert("Signup success ✅");
+}
+
+// --- LOGIN ---
 function login() {
   let u = username.value.trim(),
       p = password.value.trim();
   if (!users[u] || users[u].password !== p) {
-    loginMsg.innerText = 'Invalid login';
+    alert("Invalid login ❌");
     return;
   }
   currentUser = u;
-  loginSection.style.display = 'none';
-  homeApps.style.display = 'block';
-
-  // Load user's notes after login
-  notesText.value = users[currentUser].notes || '';
+  isGuest = false;
+  loginSection.style.display = "none";
+  homeApps.style.display = "block";
+  notesText.value = users[currentUser].notes || "";
+  document.getElementById("guestBadge").style.display = "none";
 }
 
-function logout(){currentUser=null;homeApps.style.display='none';loginSection.style.display='block';}
+// --- LOGOUT ---
+function logout() {
+  currentUser = null;
+  isGuest = false;
+  sessionStorage.removeItem("guestMode");
+  homeApps.style.display = "none";
+  loginSection.style.display = "block";
+  document.getElementById("guestBadge").style.display = "none";
+}
+
+// --- GUEST LOGIN ---
+function guestLogin() {
+  isGuest = true;
+  sessionStorage.setItem("guestMode", "true");
+  loginSection.style.display = "none";
+  homeApps.style.display = "block";
+  document.getElementById("guestBadge").style.display = "block";
+  alert("👋 Welcome Guest! Data won't be saved after you leave.");
+}
+
+// --- AUTO-RESTORE GUEST ---
+window.onload = () => {
+  if (sessionStorage.getItem("guestMode") === "true") {
+    isGuest = true;
+    loginSection.style.display = "none";
+    homeApps.style.display = "block";
+    document.getElementById("guestBadge").style.display = "block";
+  }
+};
+
+// Notes
+function saveNotes() {
+  if (!currentUser) return;
+  users[currentUser].notes = notesText.value;
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Saved');
+}
+
+// --- ALARMS (block guests) ---
+function addAlarm() {
+  const t = document.getElementById("alarmTime").value;
+  if (!t) return;
+
+  if (isGuest) {
+    alert("⚠ Guests can't save alarms. Sign up to unlock!");
+    return;
+  }
+
+  alarms.push(t);
+  localStorage.setItem("alarms", JSON.stringify(alarms));
+  renderAlarms();
+}
+
+function addAlarm() {
+  const t = document.getElementById('alarmTime').value;
+  if (!t) return;
+  
+  if (isGuest) {
+    alert("⚠ Guests can't save alarms. Sign up to unlock!");
+    return;
+  }
+  
+  alarms.push(t);
+  localStorage.setItem('alarms', JSON.stringify(alarms));
+  renderAlarms();
+}
+if (isGuest) {
+  document.getElementById('guestBadge').style.display = 'block';
+}
+
+
 function openApp(id){homeApps.style.display='none';document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function backHome(){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));homeApps.style.display='block';}
 
@@ -583,25 +634,34 @@ function updateStopwatch(){let cs=swTime%100,s=Math.floor(swTime/100)%60,m=Math.
 
 // -------------------- TIMER APP --------------------
 let timerInterval, timerTime;
+
 function startTimer() {
   let sec = parseInt(document.getElementById('timerInput').value) || 0;
   clearInterval(timerInterval);
   timerTime = sec;
+  document.getElementById('timerDisplay').textContent = sec + ' sec';
   timerInterval = setInterval(() => {
     if (timerTime <= 0) {
       clearInterval(timerInterval);
-      alert("⏰ Time's up!");
+      playAlarmSound();
+      document.getElementById('timerDisplay').textContent = "⏰ Time's Up!";
       return;
     }
     timerTime--;
-    document.getElementById('timerDisplay').textContent = timerTime;
+    document.getElementById('timerDisplay').textContent = timerTime + ' sec';
   }, 1000);
 }
-function stopTimer() { clearInterval(timerInterval); }
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  stopAlarmSound();
+}
+
 
 // -------------------- ALARM APP --------------------
 let alarms = JSON.parse(localStorage.getItem('alarms')||'[]');
 const alarmList = document.getElementById('alarmList');
+const alarmSound = document.getElementById('alarmSound');
 
 function renderAlarms() {
   alarmList.innerHTML = '';
@@ -610,7 +670,11 @@ function renderAlarms() {
     li.textContent = time + ' ';
     let del = document.createElement('button');
     del.textContent = 'X';
-    del.onclick = () => { alarms.splice(i,1); localStorage.setItem('alarms',JSON.stringify(alarms)); renderAlarms(); };
+    del.onclick = () => {
+      alarms.splice(i, 1);
+      localStorage.setItem('alarms', JSON.stringify(alarms));
+      renderAlarms();
+    };
     li.appendChild(del);
     alarmList.appendChild(li);
   });
@@ -619,18 +683,34 @@ renderAlarms();
 
 function addAlarm() {
   const t = document.getElementById('alarmTime').value;
-  if(!t) return;
+  if (!t) return;
   alarms.push(t);
   localStorage.setItem('alarms', JSON.stringify(alarms));
   renderAlarms();
 }
 
-// Check alarms every second
-setInterval(()=>{
+// 🔊 Alarm sound functions
+function playAlarmSound() {
+  alarmSound.loop = true;
+  alarmSound.play();
+  document.getElementById('stopAlarmBtn').style.display = 'inline-block';
+}
+
+function stopAlarmSound() {
+  alarmSound.pause();
+  alarmSound.currentTime = 0;
+  document.getElementById('stopAlarmBtn').style.display = 'none';
+}
+
+// Check every second
+setInterval(() => {
   const now = new Date();
   const hhmm = now.toTimeString().slice(0,5);
-  if(alarms.includes(hhmm)) alert('⏰ Alarm!');
-},1000);
+  if (alarms.includes(hhmm)) {
+    playAlarmSound();
+  }
+}, 1000);
+
 
 // -------------------- MAP APP --------------------
 function searchMap() {
@@ -639,47 +719,15 @@ function searchMap() {
   document.getElementById('mapFrame').src = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 }
 
-// -------------------- MINI GAME APP (Tic Tac Toe) --------------------
-let board = Array(9).fill('');
-const tttDiv = document.getElementById('ticTacToe');
-const tttResult = document.getElementById('tttResult');
 
-function renderTTT() {
-  tttDiv.innerHTML='';
-  board.forEach((v,i)=>{
-    let btn=document.createElement('button');
-    btn.style.width='60px'; btn.style.height='60px'; btn.style.fontSize='24px';
-    btn.textContent=v;
-    btn.onclick=()=>makeMove(i);
-    tttDiv.appendChild(btn);
-  });
+function openWallpaperApp(){
+  hideAllApps();
+  document.getElementById('wallpaperApp').style.display='block';
 }
-
-function makeMove(i) {
-  if(board[i] || tttResult.textContent) return;
-  board[i]='X';
-  if(checkWinner('X')) { tttResult.textContent='You Win!'; renderTTT(); return; }
-  aiMove();
-  renderTTT();
+function closeWallpaperApp(){
+  document.getElementById('wallpaperApp').style.display='none';
 }
-
-function aiMove() {
-  let empty = board.map((v,i)=>v===''?i:null).filter(v=>v!==null);
-  if(empty.length===0) return;
-  let choice = empty[Math.floor(Math.random()*empty.length)];
-  board[choice]='O';
-  if(checkWinner('O')) tttResult.textContent='AI Wins!';
-}
-
-function checkWinner(p) {
-  const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  return wins.some(w=> w.every(i=>board[i]===p));
-}
-
-function resetTTT() { board=Array(9).fill(''); tttResult.textContent=''; renderTTT(); }
-
-renderTTT();
-
+function applyWallpaper(src){document.body.style.backgroundImage=`url('${src}')`;document.body.style.backgroundSize='cover';document.body.style.backgroundPosition='center';}
 
 </script>
 </body>
