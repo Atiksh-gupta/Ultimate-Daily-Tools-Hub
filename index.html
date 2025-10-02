@@ -250,14 +250,14 @@ button:hover{background:#115293;}
   <p id="timerDisplay">0 sec</p>
 </section>
 
+
 <!-- ALARM APP -->
 <section id="alarmApp">
   <button class="back-btn" onclick="backHome()">Back</button>
-  <h2>⏰ Alarm</h2>
+  <h2>Alarm</h2>
   <input type="time" id="alarmTime">
   <button onclick="addAlarm()">Set Alarm</button>
   <ul id="alarmList"></ul>
-  <button id="stopAlarmBtn" onclick="stopAlarmSound()" style="display:none;">Stop Alarm</button>
 </section>
 
 
@@ -366,39 +366,6 @@ function saveNotes() {
   localStorage.setItem('users', JSON.stringify(users));
   alert('Saved');
 }
-
-// --- ALARMS (block guests) ---
-function addAlarm() {
-  const t = document.getElementById("alarmTime").value;
-  if (!t) return;
-
-  if (isGuest) {
-    alert("⚠ Guests can't save alarms. Sign up to unlock!");
-    return;
-  }
-
-  alarms.push(t);
-  localStorage.setItem("alarms", JSON.stringify(alarms));
-  renderAlarms();
-}
-
-function addAlarm() {
-  const t = document.getElementById('alarmTime').value;
-  if (!t) return;
-  
-  if (isGuest) {
-    alert("⚠ Guests can't save alarms. Sign up to unlock!");
-    return;
-  }
-  
-  alarms.push(t);
-  localStorage.setItem('alarms', JSON.stringify(alarms));
-  renderAlarms();
-}
-if (isGuest) {
-  document.getElementById('guestBadge').style.display = 'block';
-}
-
 
 function openApp(id){homeApps.style.display='none';document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function backHome(){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));homeApps.style.display='block';}
@@ -642,7 +609,6 @@ function stopTimer() {
 // -------------------- ALARM APP --------------------
 let alarms = JSON.parse(localStorage.getItem('alarms')||'[]');
 const alarmList = document.getElementById('alarmList');
-const alarmSound = document.getElementById('alarmSound');
 
 function renderAlarms() {
   alarmList.innerHTML = '';
@@ -651,11 +617,7 @@ function renderAlarms() {
     li.textContent = time + ' ';
     let del = document.createElement('button');
     del.textContent = 'X';
-    del.onclick = () => {
-      alarms.splice(i, 1);
-      localStorage.setItem('alarms', JSON.stringify(alarms));
-      renderAlarms();
-    };
+    del.onclick = () => { alarms.splice(i,1); localStorage.setItem('alarms',JSON.stringify(alarms)); renderAlarms(); };
     li.appendChild(del);
     alarmList.appendChild(li);
   });
@@ -664,33 +626,20 @@ renderAlarms();
 
 function addAlarm() {
   const t = document.getElementById('alarmTime').value;
-  if (!t) return;
+  if(!t) return;
   alarms.push(t);
   localStorage.setItem('alarms', JSON.stringify(alarms));
   renderAlarms();
 }
 
-// 🔊 Alarm sound functions
-function playAlarmSound() {
-  alarmSound.loop = true;
-  alarmSound.play();
-  document.getElementById('stopAlarmBtn').style.display = 'inline-block';
-}
-
-function stopAlarmSound() {
-  alarmSound.pause();
-  alarmSound.currentTime = 0;
-  document.getElementById('stopAlarmBtn').style.display = 'none';
-}
-
-// Check every second
-setInterval(() => {
+// Check alarms every second
+setInterval(()=>{
   const now = new Date();
   const hhmm = now.toTimeString().slice(0,5);
-  if (alarms.includes(hhmm)) {
-    playAlarmSound();
-  }
-}, 1000);
+  if(alarms.includes(hhmm)) alert('⏰ Alarm!');
+},1000);
+
+
 
 
 // -------------------- MAP APP --------------------
